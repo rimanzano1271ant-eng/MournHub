@@ -1,0 +1,41 @@
+
+
+
+#profile{
+	height: 250px;
+	width: 250px;
+	border-radius: 50%;
+	object-fit: cover;
+}
+
+#landing{
+	height: 90vh;
+
+	display: flex;
+	flex-direction: column;
+
+	justify-content: center;
+	align-items: center;
+}
+
+footer {
+	background-color: orange;
+
+	padding: 10px;
+
+	
+	text-align: center;
+}
+
+i{
+	
+	font-size: 25px;
+
+	color: black;
+	
+	margin-right: 10px;
+}
+
+i:hover{
+	color: aqua;
+}
