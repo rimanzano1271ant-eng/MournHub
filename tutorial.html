@@ -16,15 +16,46 @@
 <body style="background-color:black;">
     <center>
     <font color="orange">
-<h1>Mourn <mark>Hub</mark></h1>
+<h1>Mourn <mark>hub</mark></h1>
 </font>
 
+<audio id="myAudio">
+  <source src="yamete102.ogg" type="audio/ogg">
+  <source src="yamete102.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+
+
 <hr>
+<style>
+div.container{
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap; /* THIS is important */
+  justify-content: center;
+}
+div.container div{
+  width: 30%;
+  margin: 10px;
+}
+p{
+    text-align: center;
+}
+h1{
+    text-align: center;
+}
+
+
+</style>
+
+
 
 <div class="topnav">
   <a class="active" href="index.html">Home</a>
   <a href="content.html">Videos</a>
-  <a href="tutorial.html">Tutorial</a>
+  <a href="minigame.html">Games</a>
+  <a href="tutorial.html">Products</a>
   <a href="about.html">About</a>
 </div>
 
@@ -32,17 +63,92 @@
 <hr>
 <hr>
 
-
 <font color="orange">
-<p>Click the youtube link below for more insights!</p>
-</font>
-<div class="container">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=TaYnmXru93HLzMp4" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</div>
+  <p>Grasswalk (In-Game)</p>
+    </font>
+<audio controls autoplay>
+  <source src="song3.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
 
-<font color="orange">
-<p>It only shows thumbnail if you watch it on youtube, it is safe btw.</p>
-</font>
+<hr>
+<hr>
+
+<form action="/search" method="get">
+  <input type="text" name="q" placeholder="Looking for coffins?..">
+  <button type="submit">Search</button>
+</form>
+
+
+      <br>
+      <font color="orange">
+      <h1><bold>AFTERLIFE BEDS</bold></h1>
+    </font>
+      <br>
+      <br>
+
+    <center>
+
+    <div class="container">
+
+    <div>
+        <a href="#coffins">
+        <img src="images/Coffin1.png" alt="ST. ANDREW" height="400" width="400">
+        </a>
+        <font color="orange">
+        <p>ST. ANDREW</p>
+      </font>
+        <font color="red">
+         <p>from ₱54,000.00</p>
+        </font>
+        <button onclick="playAudio()" type="button">Buy now</button>
+    </div>
+
+   <div>
+        <a href="#coffins">
+        <img src="images/Coffin2.png" alt="DJANGGO" height="400" width="400">
+        </a>
+        <font color="orange">
+        <p>DJANGGO</p>
+      </font>
+        <font color="red">
+         <p>from ₱67,000.00</p>
+        </font>
+        <button onclick="playAudio()" type="button">Buy now</button>
+    </div>
+
+   <div>
+        <a href="#coffins">
+        <img src="images/Coffin3.png" alt="ST. BERNADETTE" height="400" width="400">
+        </a>
+        <font color="orange">
+        <p>ST. BERNADETTE</p>
+      </font>
+        <font color="red">
+         <p>from ₱69,000.00</p>
+        </font>
+        <button onclick="playAudio()" type="button">Buy now</button>
+    </div>
+
+   <div>
+        <a href="#coffins">
+        <img src="images/Coffin4.png" alt="ST. CLAIRE" height="400" width="400">
+        </a>
+        <font color="orange">
+        <p>ST. CLAIRE</p>
+      </font>
+        <font color="red">
+         <p>from ₱125,000.00</p>
+        </font>
+        <button onclick="playAudio()" type="button">Buy now</button>
+    </div>
+
+
+
+
+    </div>
+
+</center>
 
 
 <font color="orange">
@@ -79,6 +185,19 @@
   <script src="https://kit.fontawesome.com/1d52df81a6.js" crossorigin="anonymous"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+<script>
+var x = document.getElementById("myAudio"); 
+
+function playAudio() { 
+  x.play(); 
+} 
+
+function pauseAudio() { 
+  x.pause(); 
+} 
+</script>
+
 
 </body>
 </html>

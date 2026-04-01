@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>PVC Mini Game</title>
+  <style>
+    body {
+      margin: 0;
+      text-align: center;
+      font-family: Arial;
+      background: #808080;
+    }
+
+    canvas {
+      display: none;
+      margin: auto;
+      background: url("images/background.jpg");
+      background-size: cover;
+      border: 3px solid black;
+    }
+
+    #menu {
+      margin-top: 100px;
+    }
+
+    button {
+      padding: 10px 20px;
+      font-size: 20px;
+      cursor: pointer;
+      margin: 10px;
+    }
+
+    #ui {
+      display: none;
+      font-size: 24px;
+      margin-top: 10px;
+    }
+
+    #gameOverScreen {
+      display: none;
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: white;
+      padding: 30px;
+      border: 3px solid black;
+    }
+
+#returnBtn {
+  position: absolute;
+  top: 15px;
+  left: 15px;
+  padding: 10px 15px;
+  font-size: 16px;
+  background: black;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 1000;
+}
+
+#returnBtn:hover {
+  background: #333;
+}
+
+  </style>
+</head>
+<body>
+	<button id="returnBtn" onclick="goToMain()">⬅ Return</button>
+
+<!-- MENU -->
+<div id="menu">
+  <h1>🌱 PVC Mini Game</h1>
+  <button onclick="startGame()">Start Game</button>
+</div>
+
+<!-- GAME -->
+<canvas id="gameCanvas" width="800" height="500"></canvas>
+
+<!-- UI -->
+<div id="ui">
+  ☀️ Sun: <span id="sunCount">100</span>
+</div>
+
+<!-- GAME OVER -->
+<div id="gameOverScreen">
+  <h1>💀 Game Over</h1>
+  <p>Your Sun: <span id="finalSun"></span></p>
+  <button onclick="restartGame()">Restart</button>
+  <button onclick="exitGame()">Exit</button>
+</div>
+
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let gameRunning = false;
+
+// Grid
+const cellSize = 80;
+const rows = 5;
+
+// Game data
+let plants = [];
+let zombies = [];
+let bullets = [];
+let sun = 100;
+let frame = 0;
+
+// Images
+let plantImg = new Image();
+plantImg.src = "images/peashooter.png";
+
+let zombieImg = new Image();
+zombieImg.src = "images/zombie.png";
+
+let bulletImg = new Image();
+bulletImg.src = "images/bullet.png";
+
+// START GAME
+function startGame() {
+  document.getElementById("menu").style.display = "none";
+  canvas.style.display = "block";
+  document.getElementById("ui").style.display = "block";
+
+  resetGame();
+
+  gameRunning = true;
+  update();
+}
+
+// RESET GAME STATE
+function resetGame() {
+  plants = [];
+  zombies = [];
+  bullets = [];
+  sun = 100;
+  frame = 0;
+  document.getElementById("sunCount").innerText = sun;
+}
+
+// PLACE PLANT
+canvas.addEventListener("click", (e) => {
+  if (!gameRunning) return;
+  if (sun < 50) return;
+
+  let rect = canvas.getBoundingClientRect();
+  let x = Math.floor((e.clientX - rect.left) / cellSize);
+  let y = Math.floor((e.clientY - rect.top) / cellSize);
+
+  plants.push({
+    x: x * cellSize,
+    y: y * cellSize,
+    shootTimer: 0
+  });
+
+  sun -= 50;
+  document.getElementById("sunCount").innerText = sun;
+});
+
+// SPAWN ZOMBIE
+function spawnZombie() {
+  let row = Math.floor(Math.random() * rows);
+
+  zombies.push({
+    x: canvas.width,
+    y: row * cellSize,
+    health: 5
+  });
+}
+
+// GAME LOOP
+function update() {
+  if (!gameRunning) return;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // DRAW PLANTS
+  plants.forEach(p => {
+    ctx.drawImage(plantImg, p.x, p.y, 60, 60);
+
+    p.shootTimer++;
+    if (p.shootTimer > 60) {
+      bullets.push({
+        x: p.x + 60,
+        y: p.y + 30
+      });
+      p.shootTimer = 0;
+    }
+  });
+
+  // DRAW BULLETS
+  bullets.forEach((b, i) => {
+    b.x += 5;
+    ctx.drawImage(bulletImg, b.x, b.y, 20, 10);
+
+    zombies.forEach((z, zi) => {
+      if (
+        b.x < z.x + 60 &&
+        b.x + 20 > z.x &&
+        b.y < z.y + 60 &&
+        b.y + 10 > z.y
+      ) {
+        z.health--;
+        bullets.splice(i, 1);
+
+        if (z.health <= 0) {
+          zombies.splice(zi, 1);
+          sun += 25;
+          document.getElementById("sunCount").innerText = sun;
+        }
+      }
+    });
+  });
+
+  // DRAW ZOMBIES
+  zombies.forEach((z) => {
+    z.x -= 0.4;
+    ctx.drawImage(zombieImg, z.x, z.y, 60, 60);
+
+    if (z.x < 0) {
+      endGame();
+    }
+  });
+
+  // SPAWN
+  if (frame % 200 === 0) spawnZombie();
+
+  frame++;
+  requestAnimationFrame(update);
+}
+
+// GAME OVER FUNCTION
+function endGame() {
+  gameRunning = false;
+  document.getElementById("gameOverScreen").style.display = "block";
+  document.getElementById("finalSun").innerText = sun;
+}
+
+// RESTART
+function restartGame() {
+  document.getElementById("gameOverScreen").style.display = "none";
+  resetGame();
+  gameRunning = true;
+  update();
+}
+
+// EXIT
+function exitGame() {
+  document.getElementById("gameOverScreen").style.display = "none";
+  document.getElementById("menu").style.display = "block";
+  canvas.style.display = "none";
+  document.getElementById("ui").style.display = "none";
+
+  resetGame();
+}
+</script>
+
+<script>
+function goToMain() {
+  window.location.href = "index.html"; // 👈 CHANGE THIS if needed
+}
+</script>
+
+<font color="orange" class="fixed-bottom">
+  <p>Loonboon (In-Game)</p>
+    </font>
+<audio controls autoplay class="fixed-bottom">
+  <source src="song5.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+
+<script>
+var x = document.getElementById("myAudio"); 
+
+function playAudio() { 
+  x.play(); 
+} 
+
+function pauseAudio() { 
+  x.pause(); 
+} 
+</script>
+
+</body>
+</html>

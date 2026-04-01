@@ -9,7 +9,7 @@
 }
 
 #landing{
-	height: 90vh;
+	height: 94vh;
 
 	display: flex;
 	flex-direction: column;
@@ -37,5 +37,5 @@ i{
 }
 
 i:hover{
-	color: aqua;
+	color: whitesmoke;
 }
